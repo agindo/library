@@ -20,11 +20,11 @@ class Header extends Component {
           <Nav className="mr-auto" navbar>
             <NavItem>
               {/* Isi to dengan path yang akan dituju. Berikan kata yang merepresentasi Button yang bersanngkutan*/}
-              <NavLink className="linkMenu" to="">          </NavLink>
+              <NavLink className="linkMenu" to="/tambah">Tambah Buku</NavLink>
             </NavItem>
           </Nav>
           {/* Ubah [isidDenganNama] menjadi nama peserta  */}
-          <NavbarText>oleh [isiDenganNama]</NavbarText>
+          <NavbarText>oleh Agindo</NavbarText>
           </div>
         </Navbar>
       </div>

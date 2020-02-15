@@ -5,13 +5,19 @@ import { CardColumns } from 'reactstrap';
 
 class Books extends Component {
   render() {
-    return this.props.books.map(book => (
+    return (
+    // return this.props.books.map(book => (
       <CardColumns>
         {/* Buat sebuah perulangan untuk semua objek pada array book maka panggil component Book */}
         {/* Isi disini  */}
-        <Book book={book}/>
+        {
+        this.props.books.map(book => (
+          <Book book={book}/>
+        ))
+        }
       </CardColumns>
-    ))
+    // ))
+    )
   }
 }
 

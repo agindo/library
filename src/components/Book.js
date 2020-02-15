@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Badge } from 'reactstrap';
-import { Card, Button, CardTitle, CardText, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Card, Button, CardTitle, CardText, Modal, ModalBody, ModalFooter, ModalHeader, CardImg, CardBody, CardLink, CardSubtitle} from 'reactstrap';
 import axios from 'axios';
 
 class Book extends Component {
@@ -32,12 +32,35 @@ class Book extends Component {
       );
   };
 
+  DeleteBook = buku => {
+    // isi disini
+    axios.delete('https://library2020-api-agindo.herokuapp.com/library/'+buku._id)
+      .then(res => {
+        // ubah kembali state modal menjadi false
+        this.setState({
+          modal: false
+        })
+        
+        // Tampilakan window alert yang memberitahu informasi bahwa perubahan berhasil
+        // Isi disini
+        // window.alert('Berhasil')
+        window.location.reload();
+      }
+      );
+  };
+
   
   onSubmit = e => {
     e.preventDefault();
     // TODO: Panggil fungsi EditBook 
     // isi disini
-    this.EditBook(this.state.selectedBook)
+    this.EditBook(this.state.selectedBook);
+    // this.DeleteBook(this.state.selectedBook);
+  };
+
+  onDelete = e => {
+    e.preventDefault();
+    this.DeleteBook(this.state.selectedBook);
   };
 
   render() {
@@ -47,30 +70,38 @@ class Book extends Component {
 
     return (
       <div>
-        <Card body style={{ marginBottom: '12px', cursor: 'pointer' }} onClick={() => { this.toggle(this.props.book) }}>
-          <CardTitle>
-            <label style={{ fontWeight: 'bold' }}>{judulBuku}</label>
-            <Badge style={{ marginLeft: '5px', fontSize: '9px' }} color={isDipinjam ? "danger" : "success"}>
-              {/* TODO: Buat sebuah ternary. Jika isDipinjam true menampilkan kata "Lenyap,*/}
-              {/* Jika false menampilkan kata "Tersedia" */}
-              {/* isi disini */}
+      <Card style={{ cursor: 'pointer' }} onClick={() => { this.toggle(this.props.book) }}>
+        {/* <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+        </CardBody>
+        <img width="100%" src="/assets/318x180.svg" alt="Card image cap" /> */}
+        <CardBody>
+          <CardText>
+            <p style={{fontSize: '12px', margin: 0}}>{genreBuku}</p>
+            {judulBuku}
+            <p style={{fontSize: '12px', margin: 0}}>Pengarang oleh {pengarangBuku}</p>
+            <Badge color={isDipinjam ? "danger" : "success"}>
               { isDipinjam ? 'Lenyap' : "Tersedia" }
             </Badge>
-          </CardTitle>
-          <CardText style={{ fontSize: '12px' }}><b>Pengarang:</b> {pengarangBuku}</CardText>
-          <CardText style={{ fontSize: '12px' }}><b>Genre: </b>{genreBuku}</CardText>
-        </Card>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} >
-          <ModalHeader toggle={this.toggle}>{this.state.selectedBook.judulBuku}</ModalHeader>
-          <ModalBody>
-            Apakah Anda yakin untuk {isDipinjam ? "mengembalikan" : "meminjam"} buku ini?
+          </CardText>
+          {/* <CardLink href="#" style={{fontSize: '12px'}}>Update</CardLink>
+          <CardLink href="#" style={{fontSize: '12px'}}>Hapus</CardLink>
+          <CardLink href="#" style={{fontSize: '12px'}}>Another Link</CardLink> */}
+        </CardBody>
+      </Card>
+      <Modal isOpen={this.state.modal} toggle={this.toggle} >
+        <ModalHeader toggle={this.toggle}>{this.state.selectedBook.judulBuku}</ModalHeader>
+        <ModalBody>
+          Apakah Anda yakin untuk {isDipinjam ? "mengembalikan" : "meminjam"} buku ini?
         </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.onSubmit}>{isDipinjam ? "Kembalikan Buku" : "Pinjam Buku"}</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
+        <ModalFooter>
+          <Button color="secondary" onClick={this.onDelete}>Hapus</Button>
+          <Button color="primary" onClick={this.onSubmit}>{isDipinjam ? "Kembalikan Buku" : "Pinjam Buku"}</Button>{' '}
+          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+    </div>
     );
   }
 }
